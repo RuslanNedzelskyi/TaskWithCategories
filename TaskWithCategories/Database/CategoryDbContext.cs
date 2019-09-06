@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TaskWithCategories.Models;
+using TaskWithCategories.Repositories.Consts;
 
 namespace TaskWithCategories.Database
 {
@@ -11,7 +12,7 @@ namespace TaskWithCategories.Database
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=ManagerGoodsAppData;Integrated Security=True;");
+            optionsBuilder.UseSqlServer(PathToDB.PATH_TO_DB);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

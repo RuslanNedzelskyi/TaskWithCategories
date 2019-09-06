@@ -6,14 +6,3 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
 </div>
-
-@*@foreach (Category category in Model)
-{
-    @foreach (Category category1 in category.SubCategories)
-    {
-        @foreach (Goods goods in category1.Goods)
-        {
-            @goods.GoodsName;
-        }
-    }
-}*@
