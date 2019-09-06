@@ -13,9 +13,10 @@ namespace TaskWithCategories.Repositories
         public List<Category> GetAllCategoriesWithContent()
         {
             string sqlQuery = @"SELECT g.ID, g.GoodsName, g.Description, g.Price, g. SubCategoryId, " +
-                                @"c.ID, c.CategoryName, c.ParentCategoryId " +
-                                @"FROM Goods AS g RIGHT JOIN Categories AS c " +
-                                @"ON g.SubCategoryId = c.ID";
+                                    @"c.ID, c.CategoryName, c.ParentCategoryId " +
+                                    @"FROM Goods AS g RIGHT JOIN Categories AS c " +
+                                    @"ON g.SubCategoryId = c.ID " +
+                                    @"ORDER BY c.ParentCategoryId";
 
             List<Category> categories = new List<Category>();
             List<Category> SubCategories = new List<Category>();
@@ -56,7 +57,7 @@ namespace TaskWithCategories.Repositories
                                 }
                             }
 
-                            if (string.IsNullOrEmpty(sqlDataReader[7].ToString()))
+                            if (string.IsNullOrEmpty(sqlDataReader[7].ToString()) || sqlDataReader[7].ToString().ToLower() != "null")
                             {
                                 category = new Category
                                 {
