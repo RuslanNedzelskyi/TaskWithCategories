@@ -5,10 +5,6 @@ namespace TaskWithCategories.Database
 {
     public class ManagerGoodsDbContext : DbContext
     {
-        //public ManagerGoodsDbContext(DbContextOptions<ManagerGoodsDbContext> options)
-        //    : base(options)
-        //{ }
-
         public DbSet<Goods> Goods { get; set; }
 
         public DbSet<Category> Categories { get; set; }
