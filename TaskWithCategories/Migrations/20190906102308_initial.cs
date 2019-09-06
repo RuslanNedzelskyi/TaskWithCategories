@@ -31,7 +31,8 @@ namespace TaskWithCategories.Migrations
                 name: "Goods",
                 columns: table => new
                 {
-                    ID = table.Column<double>(nullable: false),
+                    ID = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     GoodsName = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Price = table.Column<double>(nullable: false),

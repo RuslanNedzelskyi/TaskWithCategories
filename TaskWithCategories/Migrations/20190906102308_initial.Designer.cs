@@ -10,7 +10,7 @@ using TaskWithCategories.Database;
 namespace TaskWithCategories.Migrations
 {
     [DbContext(typeof(ManagerGoodsDbContext))]
-    [Migration("20190906083723_initial")]
+    [Migration("20190906102308_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,7 +40,9 @@ namespace TaskWithCategories.Migrations
 
             modelBuilder.Entity("TaskWithCategories.Models.Goods", b =>
                 {
-                    b.Property<double>("ID");
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description");
 

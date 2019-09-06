@@ -2,7 +2,7 @@
 {
     public class Goods
     {
-        public double ID { get; set; }
+        public int ID { get; set; }
 
         public string GoodsName { get; set; }
 

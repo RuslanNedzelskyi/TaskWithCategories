@@ -38,7 +38,9 @@ namespace TaskWithCategories.Migrations
 
             modelBuilder.Entity("TaskWithCategories.Models.Goods", b =>
                 {
-                    b.Property<double>("ID");
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description");
 
