@@ -13,8 +13,8 @@ namespace TaskWithCategories.Migrations
                 {
                     ID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    ParentCategoryId = table.Column<int>(nullable: false)
+                    CategoryName = table.Column<string>(nullable: true),
+                    ParentCategoryId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -24,7 +24,7 @@ namespace TaskWithCategories.Migrations
                         column: x => x.ParentCategoryId,
                         principalTable: "Categories",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -32,7 +32,7 @@ namespace TaskWithCategories.Migrations
                 columns: table => new
                 {
                     ID = table.Column<double>(nullable: false),
-                    Name = table.Column<string>(nullable: true),
+                    GoodsName = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     Price = table.Column<double>(nullable: false),
                     SubCategoryId = table.Column<int>(nullable: false)

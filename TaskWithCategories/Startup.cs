@@ -23,11 +23,6 @@ namespace TaskWithCategories
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContextPool<ManagerGoodsDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("ManagerCategory"));
-            });
-
             services.AddTransient<ICategoryData, CategoriesRepository>();
 
             services.Configure<CookiePolicyOptions>(options =>
