@@ -22,7 +22,29 @@ namespace TaskWithCategories.Controllers
             return View(categories);
         }
 
-        public IActionResult AddToDB()
+        //[Route("[controller]/CreateNewSubCategory/{categoryId}")]
+        //public IActionResult CreateNewSubCategory(int? categoryId)
+        //{
+        //    Category category = new Category();
+        //    if (categoryId != null)
+        //    {
+        //        category = _categoriesRepository.GetCategoryById(categoryId);
+        //    }
+        //    return View(category);
+        //}
+
+        //[Route("[controller]/CreateNewGoods/{categoryId}")]
+        //public IActionResult CreateNewGoods(int? categoryId)
+        //{
+        //    Category category = new Category();
+        //    if (categoryId != null)
+        //    { 
+        //        category = _categoriesRepository.GetCategoryById(categoryId);
+        //    }
+        //    return View(category);
+        //}
+
+        public IActionResult CategoriesWithContent()
         {
             List<Category> categories = _categoriesRepository.GetAllCategoriesWithContent();
 

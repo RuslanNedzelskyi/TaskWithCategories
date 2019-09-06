@@ -4,5 +4,46 @@
 @model List<Category>
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
+    <h1 class="display-4">All Categories</h1>
 </div>
+
+<div>
+    <ul>
+        @foreach (Category category in Model)
+        {
+            <li>@category.CategoryName</li>
+            <ul>
+                @if (category.SubCategories != null)
+                {
+
+                    @foreach (Category subCategory in category.SubCategories)
+                    {
+                        <li>@subCategory.CategoryName</li>
+                        <ul>
+                            @if (subCategory.Goods != null)
+                            {
+                                @foreach (Goods goods in subCategory.Goods)
+                                {
+                                    <li>@goods.GoodsName</li>
+                                }
+                                <a href="Category/CreateNewGoods/@subCategory.ID">Add Product</a>
+                            }
+                        </ul>
+                    }
+                    <a href="Category/CreateNewSubCategory/@category.ID">Add Category</a>
+                }
+                else if (category.Goods != null)
+                {
+                    @foreach (Goods goods in category.Goods)
+                    {
+                        <li>@goods.GoodsName</li>
+                    }
+                    <a href="Category/CreateNewGoods/@category.ID">Add Product</a>
+                }
+            </ul>
+        }
+    </ul>    
+</div>
+
+
+

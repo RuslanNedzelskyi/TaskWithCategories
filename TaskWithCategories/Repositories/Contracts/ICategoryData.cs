@@ -6,5 +6,6 @@ namespace TaskWithCategories.Repositories.Contracts
     public interface ICategoryData
     {
         List<Category> GetAllCategoriesWithContent();
+        Category GetCategoryById(int? categoryId);
     }
 }

@@ -68,7 +68,7 @@ namespace TaskWithCategories.Repositories
                                         subCategory = new Category
                                         {
                                             ID = categoryId,
-                                            CategoryName = sqlDataReader[1].ToString(),
+                                            CategoryName = sqlDataReader[6].ToString(),
                                             ParentCategoryId = cat.ID
                                         };
 
@@ -107,8 +107,6 @@ namespace TaskWithCategories.Repositories
 
                                             subCategory.Goods.Add(goods);
                                         }
-
-                                        cat.SubCategories.Add(subCategory);
                                     }
                                 }
                             }
@@ -123,6 +121,39 @@ namespace TaskWithCategories.Repositories
             }
 
             return categories;
+        }
+
+        public Category GetCategoryById(int? categoryId)
+        {
+            string sqlQuery = @"SELECT * FROM Categories " +
+                                 $"WHERE ID = {categoryId}";
+
+            Category category = new Category();
+
+            using (SqlConnection connection
+                        = new SqlConnection(PathToDB.PATH_TO_DB))
+            {
+                SqlCommand getCategyById =
+                    new SqlCommand(sqlQuery, connection);
+
+                try
+                {
+                    connection.Open();
+
+                    SqlDataReader sqlDataReader = getCategyById.ExecuteReader();
+
+                    while (sqlDataReader.Read())
+                    {
+                        category.CategoryName = sqlDataReader[1].ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+
+            return category;
         }
     }
 }
