@@ -13,13 +13,19 @@ namespace TaskWithCategories.Repositories
         public List<Category> GetAllCategoriesWithContent()
         {
             string sqlQuery = @"SELECT g.ID, g.GoodsName, g.Description, g.Price, g. SubCategoryId, " +
-                                    @"c.ID, c.CategoryName, c.ParentCategoryId " +
-                                    @"FROM Goods AS g RIGHT JOIN Categories AS c " +
-                                    @"ON g.SubCategoryId = c.ID " +
-                                    @"ORDER BY c.ParentCategoryId";
+                                @"c.ID, c.CategoryName, c.ParentCategoryId " +
+                                @"FROM Goods AS g RIGHT JOIN Categories AS c " +
+                                @"ON g.SubCategoryId = c.ID " +
+                                @"ORDER BY (CASE WHEN c.ParentCategoryId IS NULL THEN 0 ELSE 1 END)";
 
             List<Category> categories = new List<Category>();
-            List<Category> SubCategories = new List<Category>();
+
+            Category category;
+
+            Category subCategory;
+
+            Goods goods;
+
             using (SqlConnection connection
                 = new SqlConnection(PathToDB.PATH_TO_DB))
             {
@@ -36,72 +42,78 @@ namespace TaskWithCategories.Repositories
                     {
                         int categoryId = int.Parse(sqlDataReader[5].ToString());
 
-                        Category category = categories.FirstOrDefault(c => c.ID.Equals(categoryId));
+                        category = categories.FirstOrDefault(c => c.ID.Equals(categoryId));
 
-                        if (category == null)
+                        if (string.IsNullOrEmpty(sqlDataReader[7].ToString())
+                            || sqlDataReader[7].ToString() == "null")
                         {
-                            foreach (Category cat in categories)
+                            category = new Category
                             {
-                                if (!cat.SubCategories.Any(j => j.ID == categoryId))
-                                {
-                                    category = new Category
-                                    {
-                                        ID = categoryId,
-                                        CategoryName = sqlDataReader[6].ToString(),
+                                ID = categoryId,
+                                CategoryName = sqlDataReader[6].ToString()
+                            };
 
-                                    };
-                                }
-                                else
-                                {
-                                    category = cat.SubCategories.FirstOrDefault(j => j.ID == categoryId);
-                                }
-                            }
-
-                            if (string.IsNullOrEmpty(sqlDataReader[7].ToString()) || sqlDataReader[7].ToString().ToLower() != "null")
-                            {
-                                category = new Category
-                                {
-                                    ID = categoryId,
-                                    CategoryName = sqlDataReader[6].ToString(),
-
-                                };
-                                category.ParentCategoryId = null;
-                                categories.Add(category);
-                            }
-                            else
-                            {
-                                category.ParentCategoryId = int.Parse(sqlDataReader[7].ToString());
-                                Category parentCategory = categories.FirstOrDefault(c => c.ID == category.ParentCategoryId);
-                                if (parentCategory.ID == category.ParentCategoryId)
-                                {
-                                    if (!parentCategory.SubCategories.Any(c => c.ID == category.ID))
-                                    {
-                                        parentCategory.SubCategories.Add(category);
-                                        SubCategories.Add(category);
-                                    }
-                                }
-                            }
-
-                            foreach (Category cat in categories)
-                            {
-                                if (cat.SubCategories.Any(g => g.ID == int.Parse(sqlDataReader[5].ToString())))
-                                {
-                                    if (!string.IsNullOrEmpty(sqlDataReader[0].ToString()))
-                                    {
-                                        Goods goods = new Goods
-                                        {
-                                            ID = int.Parse(sqlDataReader[0].ToString()),
-                                            Description = sqlDataReader[2].ToString(),
-                                            GoodsName = sqlDataReader[1].ToString(),
-                                            Price = double.Parse(sqlDataReader[3].ToString()),
-                                            SubCategoryId = categoryId
-                                        };
-                                        category.Goods.Add(goods);
-                                    }
-                                }
-                            }
-
+                            categories.Add(category);
                         }
+                        else
+                        {
+                            int parentCategoryId = int.Parse(sqlDataReader[7].ToString());
+
+                            foreach (Category cat in categories)
+                            {
+                                if (cat.ID.Equals(parentCategoryId))
+                                {
+                                    if (!cat.SubCategories.Any(c => c.ID == categoryId))
+                                    {
+                                        subCategory = new Category
+                                        {
+                                            ID = categoryId,
+                                            CategoryName = sqlDataReader[1].ToString(),
+                                            ParentCategoryId = cat.ID
+                                        };
+
+                                        if (!string.IsNullOrEmpty(sqlDataReader[0].ToString())
+                                            || sqlDataReader[0].ToString() != "null")
+                                        {
+                                            goods = new Goods
+                                            {
+                                                ID = int.Parse(sqlDataReader[0].ToString()),
+                                                GoodsName = sqlDataReader[1].ToString(),
+                                                Description = sqlDataReader[2].ToString(),
+                                                Price = double.Parse(sqlDataReader[3].ToString()),
+                                                SubCategoryId = int.Parse(sqlDataReader[4].ToString())
+                                            };
+
+                                            subCategory.Goods.Add(goods);
+                                        }
+
+                                        cat.SubCategories.Add(subCategory);
+                                    }
+                                    else
+                                    {
+                                        subCategory = cat.SubCategories.FirstOrDefault(g => g.ID == categoryId);
+
+                                        if (!string.IsNullOrEmpty(sqlDataReader[0].ToString())
+                                                || sqlDataReader[0].ToString() != "null")
+                                        {
+                                            goods = new Goods
+                                            {
+                                                ID = int.Parse(sqlDataReader[0].ToString()),
+                                                GoodsName = sqlDataReader[1].ToString(),
+                                                Description = sqlDataReader[2].ToString(),
+                                                Price = double.Parse(sqlDataReader[3].ToString()),
+                                                SubCategoryId = int.Parse(sqlDataReader[4].ToString())
+                                            };
+
+                                            subCategory.Goods.Add(goods);
+                                        }
+
+                                        cat.SubCategories.Add(subCategory);
+                                    }
+                                }
+                            }
+                        }
+
                     }
                 }
                 catch (Exception ex)
