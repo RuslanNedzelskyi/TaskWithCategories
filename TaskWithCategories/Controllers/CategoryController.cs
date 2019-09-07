@@ -29,9 +29,17 @@ namespace TaskWithCategories.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(int? categoryId, string categoryName)
+        public IActionResult AddCategory(int? categoryId, string categoryName)
         {
             _categoriesRepository.AddCategory(categoryId, categoryName);
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public IActionResult AddGoods(int? categoryId)
+        {
+            _categoriesRepository.AddGoods(categoryId);
 
             return RedirectToAction("Index");
         }
