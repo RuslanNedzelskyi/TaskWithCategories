@@ -3,46 +3,38 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using TaskWithCategories.Models;
 using TaskWithCategories.Repositories.Contracts;
+using TaskWithCategories.Views.Categories;
 
 namespace TaskWithCategories.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoriesController : Controller
     {
         private readonly ICategoryData _categoriesRepository;
 
-        public CategoryController(ICategoryData categoriesRepository)
+        public CategoriesController(ICategoryData categoriesRepository)
         {
             _categoriesRepository = categoriesRepository;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(int? categoryId)
         {
-            List<Category> categories = _categoriesRepository.GetAllCategoriesWithContent();
+            TreeViewModel treeViewModel = new TreeViewModel
+            {
+                Categories = _categoriesRepository.GetAllCategoriesWithContent(),
+                CategoryId = categoryId
+            };
 
-            return View(categories);
+            return View(treeViewModel);
         }
 
-        //[Route("[controller]/CreateNewSubCategory/{categoryId}")]
-        //public IActionResult CreateNewSubCategory(int? categoryId)
-        //{
-        //    Category category = new Category();
-        //    if (categoryId != null)
-        //    {
-        //        category = _categoriesRepository.GetCategoryById(categoryId);
-        //    }
-        //    return View(category);
-        //}
+        [HttpPost]
+        public IActionResult Add(int? categoryId, string categoryName)
+        {
+            _categoriesRepository.AddCategory(categoryId, categoryName);
 
-        //[Route("[controller]/CreateNewGoods/{categoryId}")]
-        //public IActionResult CreateNewGoods(int? categoryId)
-        //{
-        //    Category category = new Category();
-        //    if (categoryId != null)
-        //    { 
-        //        category = _categoriesRepository.GetCategoryById(categoryId);
-        //    }
-        //    return View(category);
-        //}
+            return RedirectToAction("Index");
+        }
 
         public IActionResult CategoriesWithContent()
         {

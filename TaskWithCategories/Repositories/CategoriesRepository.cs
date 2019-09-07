@@ -10,6 +10,26 @@ namespace TaskWithCategories.Repositories
 {
     public class CategoriesRepository : ICategoryData
     {
+        public void AddCategory(int? parentCategoryId, string name)
+        {
+            if (parentCategoryId.Equals(-1))
+            {
+                parentCategoryId = null;
+            }
+            string sqlQuery = @"INSERT INTO Categories(CategoryName, ParentCategoryId)" +
+                                    $"VALUES('{name}', {parentCategoryId}); ";
+
+            using (SqlConnection connection =
+                new SqlConnection(PathToDB.PATH_TO_DB))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, connection);
+
+                connection.Open();
+
+                sqlCommand.ExecuteNonQuery();
+            }
+        }
+
         public List<Category> GetAllCategoriesWithContent()
         {
             string sqlQuery = @"SELECT g.ID, g.GoodsName, g.Description, g.Price, g. SubCategoryId, " +
@@ -57,7 +77,8 @@ namespace TaskWithCategories.Repositories
                         }
                         else
                         {
-                            int parentCategoryId = int.Parse(sqlDataReader[7].ToString());
+                            string val = sqlDataReader[7].ToString();
+                            int parentCategoryId = int.Parse(val);
 
                             foreach (Category cat in categories)
                             {
@@ -72,8 +93,9 @@ namespace TaskWithCategories.Repositories
                                             ParentCategoryId = cat.ID
                                         };
 
-                                        if (!string.IsNullOrEmpty(sqlDataReader[0].ToString())
-                                            || sqlDataReader[0].ToString() != "null")
+                                        string val1 = sqlDataReader[0].ToString();
+                                        if (!string.IsNullOrEmpty(val1)
+                                            && val1 != "null")
                                         {
                                             goods = new Goods
                                             {
@@ -121,39 +143,6 @@ namespace TaskWithCategories.Repositories
             }
 
             return categories;
-        }
-
-        public Category GetCategoryById(int? categoryId)
-        {
-            string sqlQuery = @"SELECT * FROM Categories " +
-                                 $"WHERE ID = {categoryId}";
-
-            Category category = new Category();
-
-            using (SqlConnection connection
-                        = new SqlConnection(PathToDB.PATH_TO_DB))
-            {
-                SqlCommand getCategyById =
-                    new SqlCommand(sqlQuery, connection);
-
-                try
-                {
-                    connection.Open();
-
-                    SqlDataReader sqlDataReader = getCategyById.ExecuteReader();
-
-                    while (sqlDataReader.Read())
-                    {
-                        category.CategoryName = sqlDataReader[1].ToString();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
-            }
-
-            return category;
         }
     }
 }

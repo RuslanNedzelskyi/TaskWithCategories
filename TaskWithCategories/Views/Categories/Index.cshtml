@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@model List<Category>
+@model TreeViewModel
 
 <div class="text-center">
     <h1 class="display-4">All Categories</h1>
@@ -9,7 +9,7 @@
 
 <div>
     <ul>
-        @foreach (Category category in Model)
+        @foreach (Category category in Model.Categories)
         {
             <li>@category.CategoryName</li>
             <ul>
@@ -26,11 +26,11 @@
                                 {
                                     <li>@goods.GoodsName</li>
                                 }
-                                <a href="Category/CreateNewGoods/@subCategory.ID">Add Product</a>
+                                <a href="Categories/CreateNewGoods/@subCategory.ID">Add Product</a>
                             }
                         </ul>
                     }
-                    <a href="Category/CreateNewSubCategory/@category.ID">Add Category</a>
+                    <a href="Categories/index?categoryId=@category.ID">Add SubCategory</a>
                 }
                 else if (category.Goods != null)
                 {
@@ -38,12 +38,28 @@
                     {
                         <li>@goods.GoodsName</li>
                     }
-                    <a href="Category/CreateNewGoods/@category.ID">Add Product</a>
+                    <a href="Categories/CreateNewGoods/@category.ID">Add Product</a>
                 }
             </ul>
         }
+        <a href="Categories/index?categoryId=-1">Add Root Category</a>
     </ul>    
 </div>
+
+@if (Model.CategoryId != null)
+{
+<form action="/Categories/Add" method="post">
+    <input type="hidden" name="categoryId" value="@Model.CategoryId" />
+    <div>
+        <label>Category Name</label>
+        <input type="text" name="categoryName" value="" />
+
+    </div>
+    <div>
+        <input type="submit" name="" value="Save" />
+    </div>
+</form>
+}
 
 
 
