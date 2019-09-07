@@ -29,9 +29,9 @@ namespace TaskWithCategories.Controllers
         }
 
         [HttpGet]
-        public IActionResult NewGoods(int? categoryId)
+        public IActionResult NewGoods(int? subCategoryId)
         {
-            return View();
+            return View(subCategoryId);
         }
 
         [HttpPost]
@@ -50,7 +50,7 @@ namespace TaskWithCategories.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult CategoriesWithContent()
+        public IActionResult DisplayTree()
         {
             List<Category> categories = _categoriesRepository.GetAllCategoriesWithContent();
 

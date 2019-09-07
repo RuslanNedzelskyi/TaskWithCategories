@@ -1,18 +1,7 @@
-﻿
-@{
-    ViewData["Title"] = "DisplayTree";
+﻿@{
+    ViewData["Title"] = "Add To Database";
 }
-@model TreeViewModel
+@model List<Category>
 
-<div class="text-center">
-    <h1>Current content</h1>
-</div>
+<h2 class="display-4">@ViewData["Title"]</h2>
 
-<div style="margin-left:0px">
-    <ul>
-        @foreach (Category category in Model.Categories)
-        {
-            <li>@category.CategoryName</li>
-        }
-    </ul>
-</div>
