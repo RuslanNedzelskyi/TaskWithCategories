@@ -12,12 +12,18 @@ namespace TaskWithCategories.Repositories
     {
         public void AddCategory(int? parentCategoryId, string name)
         {
+            string sqlQuery;
+
             if (parentCategoryId.Equals(-1))
             {
-                parentCategoryId = null;
+                sqlQuery = @"INSERT INTO Categories(CategoryName, ParentCategoryId)" +
+                                        $"VALUES('{name}', NULL); ";
             }
-            string sqlQuery = @"INSERT INTO Categories(CategoryName, ParentCategoryId)" +
-                                    $"VALUES('{name}', {parentCategoryId}); ";
+            else
+            {
+                sqlQuery = @"INSERT INTO Categories(CategoryName, ParentCategoryId)" +
+                                        $"VALUES('{name}', {parentCategoryId}); ";
+            }
 
             using (SqlConnection connection =
                 new SqlConnection(PathToDB.PATH_TO_DB))
