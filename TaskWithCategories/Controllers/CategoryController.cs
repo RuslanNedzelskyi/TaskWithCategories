@@ -28,18 +28,24 @@ namespace TaskWithCategories.Controllers
             return View(treeViewModel);
         }
 
-        [HttpPost]
-        public IActionResult AddCategory(int? categoryId, string categoryName)
+        [HttpGet]
+        public IActionResult NewGoods(int? categoryId)
         {
-            _categoriesRepository.AddCategory(categoryId, categoryName);
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddGoods(Goods goods)
+        {
+            _categoriesRepository.AddGoods(goods);
 
             return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public IActionResult AddGoods(int? categoryId)
+        public IActionResult AddCategory(int? categoryId, string categoryName)
         {
-            _categoriesRepository.AddGoods(categoryId);
+            _categoriesRepository.AddCategory(categoryId, categoryName);
 
             return RedirectToAction("Index");
         }

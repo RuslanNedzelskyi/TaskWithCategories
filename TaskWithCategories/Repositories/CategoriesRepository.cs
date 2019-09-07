@@ -36,10 +36,20 @@ namespace TaskWithCategories.Repositories
             }
         }
 
-        public void AddGoods(int? categoryId)
+        public void AddGoods(Goods goods)
         {
             string sqlQuery = @"INSERT INTO Goods(GoodsName, Description, Price, SubCategoryId) " +
-                                "VALUES('', '', 1.1,); ";
+                                $"VALUES('{goods.GoodsName}', '{goods.Description}', {goods.Price}, {goods.SubCategoryId}); ";
+
+            using (SqlConnection connection =
+                            new SqlConnection(PathToDB.PATH_TO_DB))
+            {
+                SqlCommand sqlCommand = new SqlCommand(sqlQuery, connection);
+
+                connection.Open();
+
+                sqlCommand.ExecuteNonQuery();
+            }
         }
 
         public List<Category> GetAllCategoriesWithContent()
