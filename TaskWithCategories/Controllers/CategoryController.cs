@@ -15,23 +15,23 @@ namespace TaskWithCategories.Controllers
             _categoriesRepository = categoriesRepository;
         }
 
-        public IActionResult Index()
+        public IActionResult ManagerCategories()
         {
             List<Category> categories = _categoriesRepository.GetAllCategoriesWithContent();
 
             return View(categories);
         }
 
-        //[Route("[controller]/CreateNewSubCategory/{categoryId}")]
-        //public IActionResult CreateNewSubCategory(int? categoryId)
-        //{
-        //    Category category = new Category();
-        //    if (categoryId != null)
-        //    {
-        //        category = _categoriesRepository.GetCategoryById(categoryId);
-        //    }
-        //    return View(category);
-        //}
+     /*   [Route("[controller]/CreateNewSubCategory/{categoryId}")]
+        public IActionResult CreateNewSubCategory(int? categoryId)
+        {
+            Category category = new Category();
+            if (categoryId != null)
+            {
+                category = _categoriesRepository.GetCategoryById(categoryId);
+            }
+            return View(category);
+        }*/
 
         //[Route("[controller]/CreateNewGoods/{categoryId}")]
         //public IActionResult CreateNewGoods(int? categoryId)
@@ -44,6 +44,7 @@ namespace TaskWithCategories.Controllers
         //    return View(category);
         //}
 
+        [Route("DisplayAll")]
         public IActionResult CategoriesWithContent()
         {
             List<Category> categories = _categoriesRepository.GetAllCategoriesWithContent();
