@@ -9,6 +9,10 @@ namespace TaskWithCategories.Views.Categories
 
         public List<Category> Categories { get;set; }
 
+        public List<Category> SubCategories { get; set; }
+
         public Goods Goods { get; set; }
+
+        public Category Category { get; set; }
     }
 }

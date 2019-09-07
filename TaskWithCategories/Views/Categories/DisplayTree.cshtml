@@ -1,7 +1,25 @@
 ﻿@{
     ViewData["Title"] = "Add To Database";
 }
-@model List<Category>
+@model TreeViewModel
 
 <h2 class="display-4">@ViewData["Title"]</h2>
 
+<div style="margin-left: 15%">
+    @foreach(Category category in Model.Categories)
+    {
+        <li><a href="/Categories/DisplayTree?categoryId=@category.ID">@category.CategoryName</a></li>
+    }
+</div>
+
+@if (Model.SubCategories != null)
+{
+    <hr>
+    <h3>SubCategories of @Model.SubCategories</h3>
+<div style="margin-left: 15%">
+    @foreach (Category category in Model.SubCategories)
+    {
+        <li><a href="/Categories/DisplayTree?categoryId=@category.ID">@category.CategoryName</a></li>
+    }
+</div>
+}

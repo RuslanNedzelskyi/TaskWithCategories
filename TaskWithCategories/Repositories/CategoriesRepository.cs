@@ -166,5 +166,95 @@ namespace TaskWithCategories.Repositories
 
             return categories;
         }
+
+        public List<Category> GetAllSubcategoriesofCategory(int? categoryId)
+        {
+            string sqlQuery = @"SELECT * FROM Categories " +
+                                    $"WHERE ParentCategoryId = {categoryId};";
+
+            List<Category> categories = new List<Category>();
+
+            using (SqlConnection connection
+                = new SqlConnection(PathToDB.PATH_TO_DB))
+            {
+                SqlCommand getCategoriesWithContent =
+                    new SqlCommand(sqlQuery, connection);
+
+                try
+                {
+                    connection.Open();
+
+                    SqlDataReader sqlDataReader = getCategoriesWithContent.ExecuteReader();
+
+                    while (sqlDataReader.Read())
+                    {
+                        Category category = new Category
+                        {
+                            ID = Int32.Parse(sqlDataReader[0].ToString()),
+                            CategoryName = sqlDataReader[1].ToString(),
+                            ParentCategoryId = categoryId
+                        };
+
+                        categories.Add(category);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+
+            return categories;
+        }
+
+        public Category GetCategoryById(int? categoryId)
+        { 
+            string sqlQuery = @"SELECT * FROM Categories " +
+                                $"WHERE ID = {categoryId};";
+
+            int id = categoryId ?? 0;
+
+            Category category= new Category();
+
+            using (SqlConnection connection
+                = new SqlConnection(PathToDB.PATH_TO_DB))
+            {
+                SqlCommand getCategoriesWithContent =
+                    new SqlCommand(sqlQuery, connection);
+
+                try
+                {
+                    connection.Open();
+
+                    SqlDataReader sqlDataReader = getCategoriesWithContent.ExecuteReader();
+
+                    while (sqlDataReader.Read())
+                    {
+                        Category newCategory = new Category();
+
+                        category.ID = id;
+
+                        newCategory.CategoryName = sqlDataReader[1].ToString();
+
+                        if (sqlDataReader[2] != null
+                         && sqlDataReader[2].ToString() != "null"
+                         && sqlDataReader[2].ToString() != "")
+                        {
+                            newCategory.ParentCategoryId = categoryId;
+                        }
+                        else
+                        {
+                            newCategory.ParentCategoryId = null;
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+
+            return category;
+        }
     }
 }

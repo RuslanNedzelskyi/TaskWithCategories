@@ -50,13 +50,6 @@ namespace TaskWithCategories.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult DisplayTree()
-        {
-            List<Category> categories = _categoriesRepository.GetAllCategoriesWithContent();
-
-            return View(categories);
-        }
-
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -66,13 +59,40 @@ namespace TaskWithCategories.Controllers
         [HttpGet]
         public IActionResult DisplayTree(int? categoryId)
         {
-            TreeViewModel treeViewModel = new TreeViewModel
+            TreeViewModel treeViewModel;
+            if (categoryId != null)
             {
-                Categories = _categoriesRepository.GetAllCategoriesWithContent(),
-                CategoryId = categoryId
-            };
+                List<Category> subCategories = _categoriesRepository.GetAllSubcategoriesofCategory(categoryId);
+                treeViewModel = new TreeViewModel
+                {
+                    Categories = _categoriesRepository.GetAllCategoriesWithContent(),
+                    SubCategories = _categoriesRepository.GetAllSubcategoriesofCategory(categoryId),
+                    Category = _categoriesRepository.GetCategoryById(categoryId),
+                    CategoryId = categoryId
+                };
+            }
+            else
+            {
+                treeViewModel = new TreeViewModel
+                {
+                    Categories = _categoriesRepository.GetAllCategoriesWithContent(),
+                    CategoryId = categoryId
+                };
+            }
 
             return View(treeViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult DisplaySubcategories(int? categoryId)
+        {
+            List<Category> subCategories = _categoriesRepository.GetAllSubcategoriesofCategory(categoryId);
+            TreeViewModel treeView = new TreeViewModel
+            {
+                Categories = subCategories,
+                CategoryId = categoryId
+            };
+            return RedirectToAction("DisplayTree", treeView);
         }
     }
 }

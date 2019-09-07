@@ -8,5 +8,7 @@ namespace TaskWithCategories.Repositories.Contracts
         List<Category> GetAllCategoriesWithContent();
         void AddCategory(int? parentCategoryId, string name);
         void AddGoods(Goods goods);
+        List<Category> GetAllSubcategoriesofCategory(int? categoryId);
+        Category GetCategoryById(int? categoryId);
     }
 }
