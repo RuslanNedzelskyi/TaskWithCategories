@@ -26,7 +26,7 @@
                                 {
                                     <li>@goods.GoodsName</li>
                                 }
-                                <a href="Categories/CreateNewGoods/@subCategory.ID">Add Product</a>
+                                <a href="Categories/NewGoods?subCategoryId=@subCategory.ID">Add Product</a>
                             }
                         </ul>
                     }
@@ -38,7 +38,7 @@
                     {
                         <li>@goods.GoodsName</li>
                     }
-                    <a href="Categories/CreateNewGoods/@category.ID">Add Product</a>
+                    <a href="Categories/NewGoods?subCategoryId=@category.ID">Add Product</a>
                 }
             </ul>
         }
@@ -48,7 +48,7 @@
 
 @if (Model.CategoryId != null)
 {
-<form action="/Categories/AddCategory method="post">
+<form action="/Categories/AddCategory" method="post">
     <input type="hidden" name="categoryId" value="@Model.CategoryId" />
     <div>
         <label>Category Name</label>

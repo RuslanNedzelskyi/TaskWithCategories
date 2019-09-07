@@ -29,9 +29,9 @@ namespace TaskWithCategories.Controllers
         }
 
         [HttpGet]
-        public IActionResult NewGoods(int? categoryId)
+        public IActionResult NewGoods(int? subCategoryId)
         {
-            return View();
+            return View(subCategoryId);
         }
 
         [HttpPost]

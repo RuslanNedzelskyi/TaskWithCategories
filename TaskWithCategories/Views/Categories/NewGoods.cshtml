@@ -5,20 +5,27 @@
 }
 @model int
 
-<form action="/categories/AddGoods" method="post">
-    <input type="hidden" name="categoryId" value="@Model" />
+    <h2 class="display-4">Add new Goods</h2>
 
-    <div>
-        <label>Goods Name</label>
-        <input type="text" name="goodsName" value="" />
-    </div>
-    <div>
-        <label>Goods Name</label>
-        <input type="text" name="goodsName" value="" />
-    </div>
-    <div>
-        <input type="submit" name="" value="Save" />
-    </div>
-</form>
+    <form action="/categories/AddGoods" method="post">
+        <div>
+            <input type="hidden" name="SubCategoryId" value="@Model" />
+            <div>
+                <label>Name</label>
+                <input type="text" name="goodsName" value="" />
+            </div>
+            <div>
+                <label>Description</label>
+                <input type="text" name="Description" value="" />
+            </div>
+            <div>
+                <label>Price</label>
+                <input type="number" name="Price" value="" />
+            </div>
+            <div>
+                <input type="submit" name="" value="Save" />
+            </div>
+        </div>
+    </form>
 
 
