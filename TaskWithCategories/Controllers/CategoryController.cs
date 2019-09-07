@@ -50,7 +50,7 @@ namespace TaskWithCategories.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult CategoriesWithContent()
+        public IActionResult DisplayTree()
         {
             List<Category> categories = _categoriesRepository.GetAllCategoriesWithContent();
 
