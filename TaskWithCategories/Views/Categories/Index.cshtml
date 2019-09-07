@@ -4,7 +4,7 @@
 @model TreeViewModel
 
 <div class="text-center">
-    <h1 class="display-4">All Categories</h1>
+    <h1 class="display-4">Add to Database</h1>
 </div>
 
 <div>
@@ -48,7 +48,7 @@
 
 @if (Model.CategoryId != null)
 {
-<form action="/Categories/AddCategory method="post">
+<form action="/Categories/AddCategory" method="post">
     <input type="hidden" name="categoryId" value="@Model.CategoryId" />
     <div>
         <label>Category Name</label>

@@ -1,0 +1,18 @@
+﻿
+@{
+    ViewData["Title"] = "DisplayTree";
+}
+@model TreeViewModel
+
+<div class="text-center">
+    <h1>Current content</h1>
+</div>
+
+<div style="margin-left:0px">
+    <ul>
+        @foreach (Category category in Model.Categories)
+        {
+            <li>@category.CategoryName</li>
+        }
+    </ul>
+</div>

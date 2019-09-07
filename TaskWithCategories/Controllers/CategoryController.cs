@@ -62,5 +62,17 @@ namespace TaskWithCategories.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpGet]
+        public IActionResult DisplayTree(int? categoryId)
+        {
+            TreeViewModel treeViewModel = new TreeViewModel
+            {
+                Categories = _categoriesRepository.GetAllCategoriesWithContent(),
+                CategoryId = categoryId
+            };
+
+            return View(treeViewModel);
+        }
     }
 }
