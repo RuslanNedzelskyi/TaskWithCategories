@@ -7,12 +7,12 @@ namespace TaskWithCategories.Views.Categories
     {
         public int? CategoryId { get; set; }
 
-        public List<Category> Categories { get;set; }
-
-        public List<Category> SubCategories { get; set; }
+        public List<Category> Categories { get; set; }
 
         public Goods Goods { get; set; }
 
-        public Category Category { get; set; }
+        public List<Category> SubCategories { get; set; }
+
+        public object Category { get; set; }
     }
 }
